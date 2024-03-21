@@ -24,6 +24,10 @@ connection.once("open", () => {
     console.log("MongoDB connection success!");
 });
 
+const ExpensesRouter = require("./routes/expenses.js");
+
+app.use("/expenses",ExpensesRouter);
+
 app.listen(PORT, () => {
     console.log(`Server is up and running on port ${PORT}`);
 });
