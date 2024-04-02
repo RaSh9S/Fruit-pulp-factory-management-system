@@ -1,5 +1,5 @@
 const router = require("express").Router();
-let Expenses = require("../models/expenses");
+let Expenses = require("../models/expenses"); //import expenses model
 
 
 router.route("/add").post((req,res)=>{
@@ -43,7 +43,7 @@ router.route("/update/:id").put(async (req,res)=>{
     const {category, date, amount, description} = req.body;
 
     const updateExpenses = {
-        category,
+         category,
          date, 
          amount, 
          description
@@ -53,6 +53,7 @@ router.route("/update/:id").put(async (req,res)=>{
         res.status(200).send({status: "Update successfull"})
     }).catch((err)=>{
         console.log(err);
+        res.status(500).send({status : "Error with Update!"});
     })
 
 
