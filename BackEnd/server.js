@@ -30,4 +30,4 @@ app.use("/expenses",ExpensesRouter); //load expenses.js file in routs folder
 
 app.listen(PORT, () => {                           
     console.log(`Server is up and running on port ${PORT}`);
-});  //listen to the port
+});
