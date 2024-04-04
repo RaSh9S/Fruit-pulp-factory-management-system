@@ -8,11 +8,25 @@ function Update() {
     const {id} = useParams();
 
     const [values, setValues] = useState({
-        category: '',
-        date: '',
-        amount: '',
-        description: ''
-      });
+      category: '',
+      date: '',
+      amount: '',
+      description: '',
+      image: '' 
+  });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        setValues({...values, image: reader.result});
+    };
+    reader.onerror = (error) => {
+        console.error('Error: ', error);
+    };
+};
+
       
 
       useEffect(() => {
@@ -23,7 +37,8 @@ function Update() {
               category: expenseData.category || '',
               date: expenseData.date || '',
               amount: expenseData.amount || '',
-              description: expenseData.description || ''
+              description: expenseData.description || '',
+              image: expenseData.image || ''
             });
           })
           .catch(err => console.log(err));
@@ -85,6 +100,21 @@ function Update() {
         />
         
       </div>
+
+      <div className='mb-3'>
+    <label htmlFor="Image">Image</label>
+    <input
+        type='file'
+        className="form-control"
+        id="image"
+        onChange={handleImageChange}
+        accept="image/*" // This ensures only image files can be selected
+        
+    />
+    
+    {values.image && <img src={values.image} alt="Uploaded" style={{width: '400px', marginTop: '40px'}} />}
+
+</div>
      
       <button type="submit" className="btn btn-primary">Update</button>
     </form>

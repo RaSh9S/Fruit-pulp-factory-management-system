@@ -24,6 +24,10 @@ const expensesSchema = new Schema({
         required: true
     },
 
+    image: { // Make sure the field name matches exactly.
+        type: String,
+    },
+
 
 })
 

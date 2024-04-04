@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FormComponent = () => {
 
@@ -8,33 +9,51 @@ const FormComponent = () => {
     const [date, setDate] = useState();
     const [amount, setAmount] = useState();
     const [description, setDescription] = useState();
+    const [image, setImage] = useState();
 
+    const navigate = useNavigate()
 
-    function sendData(e){
-
-        e.preventDefault();
     
-        const newExpense ={
-            category,
-            date,
-            amount,
-            description
-        }
+    const convertToBase64 = (e) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+          setImage(reader.result);
+      };
+      reader.onerror = (error) => {
+          console.log("Error: ", error);
+      };
+  };
 
-        axios.post("http://localhost:8070/expenses/add" ,newExpense).then(()=>{
-            alert("Expenses Added");
+  function sendData(e) {
+    e.preventDefault();
 
-            setCategory("");
-            setDate("");
-            setAmount("");
-            setDescription("");
+    const newExpense = {
+        category,
+        date,
+        amount,
+        description,
+        base64: image,
+    };
 
-        }).catch((err)=>{
-            alert(err)
-        })
+    axios.post("http://localhost:8070/expenses/add", newExpense).then(() => {
+        alert("Expenses Added");
+        navigate('/');
+
+        // Resetting all the state variables after sending the data
+        setCategory("");
+        setDate("");
+        setAmount("");
+        setDescription("");
+        setImage(""); // Corrected line
+
+    }).catch((err) => {
+        alert(err);
+    });
+}
 
 
-    }
+    
 
 
   return (
@@ -51,7 +70,7 @@ const FormComponent = () => {
             }}
         
         
-        />
+       required />
         
       </div>
       <div className="mb-3">
@@ -62,7 +81,7 @@ const FormComponent = () => {
             setDate(e.target.value);
         }}
         
-        />
+        required/>
         
       </div>
 
@@ -74,7 +93,7 @@ const FormComponent = () => {
             setAmount(e.target.value);
         }}
         
-        />
+        required/>
         
       </div>
 
@@ -86,8 +105,21 @@ const FormComponent = () => {
             setDescription(e.target.value);
         }}
         
-        />
+        required/>
         
+      </div>
+
+      <div className='auth-inner' style={{width: "auto"}}>
+        Upload Recipt
+        <input
+           accept='image/*'
+           type='file'
+           onChange={convertToBase64}
+        
+        />
+        {image==""|| image==null?"": <img width={100} height={100} src={image}/>}
+        
+
       </div>
      
       <button type="submit" className="btn btn-primary">Submit</button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 
 
 export default function AllExpenses() {
@@ -18,12 +19,18 @@ export default function AllExpenses() {
         getExpenses();
     }, []);
 
+    const navigate = useNavigate()
+
     const deleteExpense = (id) => {
         axios.delete(`http://localhost:8070/expenses/delete/${id}`)
-        .then(response => {
+        .then(() => {
+            
             alert('Expense Deleted Successfully');
+            navigate('/');
+            
             // Remove the deleted expense from the state to update UI
             setExpenses(expenses.filter(expense => expense.id !== id));
+            
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -42,8 +49,9 @@ export default function AllExpenses() {
                         <th>Date</th>
                         <th>Amount</th>
                         <th>Description</th>
-                        <th>Edit</th>
+                        <th>View</th>
                         <th>Delete</th>
+                        
                         
                         
                         {}
@@ -57,8 +65,7 @@ export default function AllExpenses() {
                             <td>{expense.date}</td>
                             <td>{expense.amount}</td>
                             <td>{expense.description }</td>
-                            <td><Link to={`/update/${expense._id}`} className="btn btn-info">Edit</Link></td>
-
+                            <td><Link to={`/update/${expense._id}`} className="btn btn-info">View</Link></td>
                             <td>
                                     <button
                                         type="button"
