@@ -5,7 +5,7 @@ let Expenses = require("../models/expenses"); //import expenses model
 router.route("/add").post((req,res)=>{
 
     const category = req.body.category;
-    const date = req.body.date;
+    const date = new Date(req.body.date);
     const amount = req.body.amount;
     const description = req.body.description; 
     const image = req.body.base64;
@@ -46,13 +46,13 @@ router.route("/update/:id").put(async (req, res) => {
 
     const updateExpenses = {
         category,
-        date, 
+        date: new Date(date), 
         amount, 
         description,
-        image // Add image here to be part of the update
+        image 
     };
 
-    await Expenses.findByIdAndUpdate(expensesId, updateExpenses, { new: true }) // Include { new: true } to return the updated object
+    await Expenses.findByIdAndUpdate(expensesId, updateExpenses, { new: true }) 
     .then((updatedExpense) => {
         res.status(200).send({status: "Update successful", updatedExpense});
     })

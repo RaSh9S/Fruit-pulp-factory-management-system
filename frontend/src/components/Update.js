@@ -33,9 +33,10 @@ function Update() {
         axios.get(`http://localhost:8070/expenses/get/${id}`)
           .then(res => {
             const expenseData = res.data.Expenses;
+            const formattedDate = expenseData.date ? new Date(expenseData.date).toISOString().split('T')[0] : '';
             setValues({
               category: expenseData.category || '',
-              date: expenseData.date || '',
+              date: formattedDate || '',
               amount: expenseData.amount || '',
               description: expenseData.description || '',
               image: expenseData.image || ''
@@ -57,6 +58,7 @@ function Update() {
 
     return (
         <div className='container'>
+          <h1>Expense Details</h1><br></br>
     <form onSubmit={handleSubmit}>
         
       <div className="mb-3">
@@ -73,7 +75,7 @@ function Update() {
       </div>
       <div className="mb-3">
         <label htmlFor="Date">Date</label>
-        <input type="text" className="form-control" id="date" placeholder='Date'
+        <input type="date" className="form-control" id="date" placeholder='Date'
         value={values.date}
         onChange={(e) => setValues({...values, date: e.target.value })}
         />

@@ -9,8 +9,8 @@ const expensesSchema = new Schema({
         required: true  //back end validation
     },
 
-    date : {
-        type : Number,
+    date: {
+        type: Date,
         required: true
     },
 

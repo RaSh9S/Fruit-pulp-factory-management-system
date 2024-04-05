@@ -75,7 +75,7 @@ const FormComponent = () => {
       </div>
       <div className="mb-3">
         <label htmlFor="Date">Date</label>
-        <input type="text" className="form-control" id="date" placeholder='Date'
+        <input type="date" className="form-control" id="date" placeholder='Date'
 
            onChange={(e)=>{
             setDate(e.target.value);

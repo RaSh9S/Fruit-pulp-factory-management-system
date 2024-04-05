@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
 
 
 export default function AllExpenses() {
     const [expenses, setExpenses] = useState([]);
 
     useEffect(() => {
-        function getExpenses() {
-            axios.get("http://localhost:8070/expenses/").then((res) => {
-                setExpenses(res.data);
-                
-            }).catch((err) => {
-                alert(err.message);
-            });
-        }
         getExpenses();
     }, []);
+    
+    const getExpenses = () => {
+        axios.get("http://localhost:8070/expenses/")
+        .then((res) => {
+            setExpenses(res.data);
+        })
+        .catch((err) => {
+            alert(err.message);
+        });
+    };
+    
 
     const navigate = useNavigate()
 
@@ -36,18 +40,66 @@ export default function AllExpenses() {
             console.error('There was an error!', error);
         });
     }
+
+    const ComponentsRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: ()=> ComponentsRef.current,
+        documentTitle:"Expenses Report",
+        onAfterPrint:()=>alert("Report Donloaded!"),
+
+    })
+
+    const [searchQuery, setSearchQuery] = useState("");
+    const [noResults, setNoResults] = useState(false);
+
+    const handleSearch = () => {
+        const filteredExpenses = expenses.filter(expense =>
+            Object.values(expense).some(value =>
+                value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+            )
+        );
+        if (filteredExpenses.length === 0) {
+            setNoResults(true);
+        } else {
+            setExpenses(filteredExpenses);
+        }
+    };
+    
+
+
     
 
     return (
         <div className='container'>
+
             <h1>All Expenses</h1>
+            <input onChange={(e) => setSearchQuery(e.target.value)}
+            type='text'
+            name='search'
+            placeholder='Search'
+            style={{float: 'right'}}
+            ></input>
+            <button onClick={handleSearch} style={{float: 'right'}}>Search</button>
+
+            {noResults ? (
+
+                <div>
+                    <p>No Details</p>
+                </div>
+            ): (
+
+
+
+
+            <div ref={ComponentsRef}>
+            
             <table className="table">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Category</th>
                         <th>Date</th>
-                        <th>Amount</th>
+                        <th>Amount (Rs.)</th>
                         <th>Description</th>
                         <th>View</th>
                         <th>Delete</th>
@@ -83,6 +135,11 @@ export default function AllExpenses() {
                     ))}
                 </tbody>
             </table>
+            
+            </div>  
+            )}
+            <Link to={`/report`} className="btn btn-info">Report</Link>
         </div>
+        
     );
 }
