@@ -7,12 +7,12 @@ const mongodb = require("mongodb");
 const app = express();
 require("dotenv").config();
 
-const PORT = process.env.PORT || 8070;
+const PORT = process.env.PORT || 8070; //port selection local or hosted
 
 app.use(cors());
-app.use(bodyparser.json());
+app.use(bodyparser.json()); //use jason format
 
-const URL = process.env.MONGODB_URL;
+const URL = process.env.MONGODB_URL; //get URL 
 
 mongoose.connect(URL, {
     useNewUrlParser: true,
@@ -24,12 +24,10 @@ connection.once("open", () => {
     console.log("MongoDB connection success!");
 });
 
-const ExpensesRouter = require("./routes/expenses.js");
+const ExpensesRouter = require("./routes/expenses.js"); //imoprt expenses.js 
 
-app.use("/expenses",ExpensesRouter);
+app.use("/expenses",ExpensesRouter); //load expenses.js file in routs folder
 
-app.listen(PORT, () => {
+app.listen(PORT, () => {                           
     console.log(`Server is up and running on port ${PORT}`);
-    console.log('testing');
 });
-

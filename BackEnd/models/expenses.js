@@ -1,16 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // import momgooes 
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema; 
 
 const expensesSchema = new Schema({
 
     category : {
         type : String,
-        required: true
+        required: true  //back end validation
     },
 
-    date : {
-        type : Number,
+    date: {
+        type: Date,
         required: true
     },
 
@@ -24,9 +24,13 @@ const expensesSchema = new Schema({
         required: true
     },
 
+    image: { // Make sure the field name matches exactly.
+        type: String,
+    },
+
 
 })
 
-const Expenses = mongoose.model("Expenses",expensesSchema);
+const Expenses = mongoose.model("Expenses",expensesSchema); //send data to expenses doc
 
-module.exports = Expenses;
+module.exports = Expenses; //export model ( importent )

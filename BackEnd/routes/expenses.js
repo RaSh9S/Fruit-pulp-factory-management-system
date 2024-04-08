@@ -1,13 +1,14 @@
 const router = require("express").Router();
-let Expenses = require("../models/expenses");
+let Expenses = require("../models/expenses"); //import expenses model
 
 
 router.route("/add").post((req,res)=>{
 
     const category = req.body.category;
-    const date = req.body.date;
+    const date = new Date(req.body.date);
     const amount = req.body.amount;
     const description = req.body.description; 
+    const image = req.body.base64;
 
 
     const newExpense = new Expenses({
@@ -15,7 +16,8 @@ router.route("/add").post((req,res)=>{
         category,
         date,
         amount,
-        description
+        description,
+        image
         
 
     })
@@ -38,25 +40,28 @@ router.route("/").get((req,res)=>{
 
 })
 
-router.route("/update/:id").put(async (req,res)=>{
-    let expemsesId = req.params.id;
-    const {category, date, amount, description} = req.body;
+router.route("/update/:id").put(async (req, res) => {
+    let expensesId = req.params.id;
+    const { category, date, amount, description, image } = req.body; // Include image in the destructuring
 
     const updateExpenses = {
         category,
-         date, 
-         amount, 
-         description
-    }
+        date: new Date(date), 
+        amount, 
+        description,
+        image 
+    };
 
-    const update = await Expenses.findByIdAndUpdate(expemsesId,updateExpenses).then(()=> {
-        res.status(200).send({status: "Update successfull"})
-    }).catch((err)=>{
-        console.log(err);
+    await Expenses.findByIdAndUpdate(expensesId, updateExpenses, { new: true }) 
+    .then((updatedExpense) => {
+        res.status(200).send({status: "Update successful", updatedExpense});
     })
+    .catch((err) => {
+        console.log(err);
+        res.status(500).send({status: "Error with update operation"});
+    });
+});
 
-
-})
 
 router.route("/delete/:id").delete(async (req,res)=>{
     let expensesId = req.params.id;
@@ -72,7 +77,7 @@ router.route("/delete/:id").delete(async (req,res)=>{
 
 router.route("/get/:id").get(async (req,res)=>{
     let expemsesId = req.params.id;
-     
+    
     const expense = await Expenses.findById(expemsesId)
     .then((Expenses) =>{
         res.status(200).send({status: "Successfull",Expenses});
@@ -81,5 +86,7 @@ router.route("/get/:id").get(async (req,res)=>{
         console.log(err.message);
     })
 })
+
+
 
 module.exports = router;
