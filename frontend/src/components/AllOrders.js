@@ -16,6 +16,7 @@ export default function AllOrders() {
         axios.get("http://localhost:8070/order/")
         .then((res) => {
             setOrder(res.data);
+            setNoResults(false);
         })
         .catch((err) => {
             alert(err.message);
@@ -53,17 +54,23 @@ export default function AllOrders() {
     const [noResults, setNoResults] = useState(false);
 
     const handleSearch = () => {
+        if (!searchQuery.trim()) {
+            getOrder();  // Reset to original orders if search query is empty
+            return;
+        }
         const filteredOrder = order.filter(order =>
             Object.values(order).some(value =>
-                value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+                value && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
             )
         );
         if (filteredOrder.length === 0) {
             setNoResults(true);
         } else {
+            setNoResults(false);
             setOrder(filteredOrder);
         }
     };
+    
     
 
 

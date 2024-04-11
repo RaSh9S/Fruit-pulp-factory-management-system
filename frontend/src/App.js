@@ -8,6 +8,7 @@ import ExpensesReport from './components/ExpensesReport';
 import NewOrder from './components/NewOrder'; 
 import AllOrders from './components/AllOrders';
 import UpdateOrder from './components/UpdateOrder'
+import OrderReport from './components/OrderReport';
 
 
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/new-order" element={<NewOrder />} />
           <Route path='/all-order' element={ <AllOrders /> } />
           <Route path='/update-order/:id' element={ <UpdateOrder /> } />
+          <Route path='/order-report' element={ <OrderReport /> } />
           
         </Routes>
         
