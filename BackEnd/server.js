@@ -28,6 +28,9 @@ const ExpensesRouter = require("./routes/expenses.js"); //imoprt expenses.js
 
 app.use("/expenses",ExpensesRouter); //load expenses.js file in routs folder
 
+const orderRouter = require("./routes/order.js");
+app.use("/order", orderRouter);
+
 app.listen(PORT, () => {                           
     console.log(`Server is up and running on port ${PORT}`);
 });

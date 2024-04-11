@@ -5,6 +5,11 @@ import Header from './components/Header';
 import AllExpenses from './components/AllExpenses';
 import Update from './components/Update';
 import ExpensesReport from './components/ExpensesReport';
+import NewOrder from './components/NewOrder'; 
+import AllOrders from './components/AllOrders';
+import UpdateOrder from './components/UpdateOrder'
+
+
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -20,9 +25,12 @@ function App() {
           <Route path='/add' element={<AddExpenses />} />
           <Route path='/update/:id' element={<Update />}/>
           <Route path="/report" element={<ExpensesReport />} />
-          
+          <Route path="/new-order" element={<NewOrder />} />
+          <Route path='/all-order' element={ <AllOrders /> } />
+          <Route path='/update-order/:id' element={ <UpdateOrder /> } />
           
         </Routes>
+        
       </div>
     </Router>
   );
