@@ -10,6 +10,8 @@ import AllOrders from './components/AllOrders';
 import UpdateOrder from './components/UpdateOrder'
 import OrderReport from './components/OrderReport';
 
+import AddFeedback from './components/AddFeedback';
+import EditFeedback from './components/EditFeedback';
 
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -30,6 +32,9 @@ function App() {
           <Route path='/all-order' element={ <AllOrders /> } />
           <Route path='/update-order/:id' element={ <UpdateOrder /> } />
           <Route path='/order-report' element={ <OrderReport /> } />
+
+          <Route path="/new-post" element={ <AddFeedback />} />
+          <Route path="/edit-post/:id" element={ <EditFeedback />} />
           
         </Routes>
         

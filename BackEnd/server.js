@@ -31,6 +31,9 @@ app.use("/expenses",ExpensesRouter); //load expenses.js file in routs folder
 const orderRouter = require("./routes/order.js");
 app.use("/order", orderRouter);
 
+const feedbackRouter = require("./routes/feedback.js");
+app.use("/feedback", feedbackRouter);
+
 app.listen(PORT, () => {                           
     console.log(`Server is up and running on port ${PORT}`);
 });
